@@ -129,6 +129,22 @@ export interface Document extends ObjectWithPermissions {
 	__search_hit__?: SearchHit
 }
 
+export interface ShareLink extends ObjectWithPermissions {
+	created: string
+	expiration?: string | null
+	slug: string
+	document: number
+	file_version: 'archive' | 'original' | string
+}
+
+export interface AuditLogEntry {
+	id: number
+	timestamp: string
+	action: string
+	changes: Record<string, unknown>
+	actor?: { id: number; username?: string } | null
+}
+
 export interface User extends ObjectWithId {
 	username?: string
 	first_name?: string

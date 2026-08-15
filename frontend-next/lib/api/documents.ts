@@ -1,5 +1,11 @@
 import { apiFetch, toQuery } from '@/lib/api/client'
-import type { BulkEditMethod, Document, Paginated } from '@/types/paperless'
+import type {
+	AuditLogEntry,
+	BulkEditMethod,
+	Document,
+	DocumentNote,
+	Paginated,
+} from '@/types/paperless'
 
 export interface DocumentListParams {
 	page?: number
@@ -28,7 +34,10 @@ export function getDocument(id: number) {
 
 export function patchDocument(
 	id: number,
-	payload: Partial<Document> & { remove_inbox_tags?: boolean }
+	payload: Partial<Omit<Document, 'custom_fields'>> & {
+		remove_inbox_tags?: boolean
+		custom_fields?: Array<{ field: number; value?: unknown }>
+	}
 ) {
 	return apiFetch<Document>(`/api/paperless/documents/${id}/`, {
 		method: 'PATCH',
@@ -106,14 +115,17 @@ export function documentDownloadUrl(id: number, original = false) {
 }
 
 export function addDocumentNote(documentId: number, note: string) {
-	return apiFetch(`/api/paperless/documents/${documentId}/notes/`, {
-		method: 'POST',
-		body: JSON.stringify({ note }),
-	})
+	return apiFetch<DocumentNote[]>(
+		`/api/paperless/documents/${documentId}/notes/`,
+		{
+			method: 'POST',
+			body: JSON.stringify({ note }),
+		}
+	)
 }
 
 export function deleteDocumentNote(documentId: number, noteId: number) {
-	return apiFetch(
+	return apiFetch<DocumentNote[]>(
 		`/api/paperless/documents/${documentId}/notes/?id=${noteId}`,
 		{
 			method: 'DELETE',
@@ -122,5 +134,7 @@ export function deleteDocumentNote(documentId: number, noteId: number) {
 }
 
 export function getDocumentHistory(documentId: number) {
-	return apiFetch(`/api/paperless/documents/${documentId}/history/`)
+	return apiFetch<AuditLogEntry[]>(
+		`/api/paperless/documents/${documentId}/history/`
+	)
 }

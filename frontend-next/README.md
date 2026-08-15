@@ -44,6 +44,7 @@ Generated files in `types/generated/` must not be edited by hand.
 
 ## Environment
 
-| Variable        | Default                 | Purpose                                     |
-| --------------- | ----------------------- | ------------------------------------------- |
-| `PAPERLESS_URL` | `http://localhost:8000` | Django origin used by the server-side proxy |
+| Variable                    | Default                 | Purpose                                     |
+| --------------------------- | ----------------------- | ------------------------------------------- |
+| `PAPERLESS_URL`             | `http://localhost:8000` | Django origin used by the server-side proxy |
+| `NEXT_PUBLIC_PAPERLESS_URL` | `http://localhost:8000` | Public origin for share links               |
