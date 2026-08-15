@@ -145,6 +145,58 @@ export interface AuditLogEntry {
 	actor?: { id: number; username?: string } | null
 }
 
+export interface MailAccount extends ObjectWithPermissions {
+	name: string
+	imap_server: string
+	imap_port?: number | null
+	imap_security: number
+	username: string
+	password?: string
+	character_set?: string
+	is_token?: boolean
+	account_type?: number
+	expiration?: string | null
+}
+
+export interface MailRule extends ObjectWithPermissions {
+	name: string
+	account: number
+	order?: number
+	enabled?: boolean
+	folder?: string
+	filter_from?: string | null
+	filter_to?: string | null
+	filter_subject?: string | null
+	filter_body?: string | null
+	filter_attachment_filename_include?: string | null
+	filter_attachment_filename_exclude?: string | null
+	maximum_age?: number
+	attachment_type?: number
+	consumption_scope?: number
+	pdf_layout?: number
+	action: number
+	action_parameter?: string | null
+	assign_title_from?: number
+	assign_tags?: number[]
+	assign_document_type?: number | null
+	assign_correspondent_from?: number
+	assign_correspondent?: number | null
+	assign_owner_from_rule?: boolean
+	stop_processing?: boolean
+}
+
+export interface ProcessedMail extends ObjectWithId {
+	owner?: number | null
+	rule: number
+	folder?: string
+	uid?: string
+	subject?: string
+	received?: string
+	processed?: string
+	status?: string
+	error?: string | null
+}
+
 export interface User extends ObjectWithId {
 	username?: string
 	first_name?: string

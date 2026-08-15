@@ -8,6 +8,7 @@ import {
 	Inbox,
 	LayoutDashboard,
 	ListTodo,
+	Mail,
 	Menu,
 	Search,
 	Settings,
@@ -76,6 +77,12 @@ const NAV = [
 		label: 'Workflows',
 		icon: Workflow,
 		type: 'workflow' as const,
+	},
+	{
+		href: '/mail',
+		label: 'Mail',
+		icon: Mail,
+		type: 'mailaccount' as const,
 	},
 	{
 		href: '/tasks',
@@ -157,6 +164,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 				'g+d': () => router.push('/documents'),
 				'g+i': () => router.push('/inbox'),
 				'g+t': () => router.push('/trash'),
+				'g+m': () => router.push('/mail'),
 				'g+v': () => router.push('/saved-views'),
 				'g+s': () => router.push('/settings'),
 			}),

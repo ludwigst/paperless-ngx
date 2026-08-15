@@ -23,6 +23,7 @@ const ROUTES = [
 	{ href: '/storage-paths', label: 'Storage paths' },
 	{ href: '/custom-fields', label: 'Custom fields' },
 	{ href: '/workflows', label: 'Workflows' },
+	{ href: '/mail', label: 'Mail' },
 	{ href: '/tasks', label: 'Tasks' },
 	{ href: '/settings', label: 'Settings' },
 	{ href: '/admin/users', label: 'Users' },
