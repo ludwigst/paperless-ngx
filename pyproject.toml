@@ -247,7 +247,7 @@ isort.force-single-line = true
 [tool.codespell]
 ignore-words-list = "criterias,afterall,valeu,ureue,equest,ure,assertIn,Oktober,commitish"
 skip = """\
-  src-ui/src/locale/*,src-ui/pnpm-lock.yaml,src-ui/e2e/*,src/paperless_mail/tests/samples/*,src/paperless/tests/samples\
+  src-ui/src/locale/*,src-ui/pnpm-lock.yaml,frontend-next/pnpm-lock.yaml,src-ui/e2e/*,src/paperless_mail/tests/samples/*,src/paperless/tests/samples\
   /mail/*,src/documents/tests/samples/*,*.po,*.json\
   """
 write-changes = true

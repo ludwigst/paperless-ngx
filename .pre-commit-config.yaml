@@ -81,6 +81,6 @@ repos:
     rev: v0.21.0
     hooks:
       - id: yamlfmt
-        exclude: "^src-ui/pnpm-lock.yaml"
+        exclude: "^(src-ui|frontend-next)/pnpm-lock.yaml"
         types:
           - yaml

@@ -73,7 +73,9 @@ class TestCustomFieldsSearch(DirectoriesMixin, APITestCase):
         # CustomField.FieldDataType.URL
         self._create_document(url_field=None)
         self._create_document(url_field="")
-        self._create_document(url_field="https://github.com/ludwigst/paperless-ngx/tree/dev/docs/")
+        self._create_document(
+            url_field="https://github.com/ludwigst/paperless-ngx/tree/dev/docs/",
+        )
         self._create_document(url_field="https://www.django-rest-framework.org/")
         self._create_document(url_field="http://example.com/")
 
@@ -254,10 +256,15 @@ class TestCustomFieldsSearch(DirectoriesMixin, APITestCase):
             - That document should not get matched.
         """
         self._assert_query_match_predicate(
-            ["url_field", "exact", "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/"],
+            [
+                "url_field",
+                "exact",
+                "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/",
+            ],
             lambda document: (
                 "url_field" in document
-                and document["url_field"] == "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/"
+                and document["url_field"]
+                == "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/"
             ),
         )
 

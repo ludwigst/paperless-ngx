@@ -1,51 +1,79 @@
-import { cookies } from "next/headers"
-import { NextRequest, NextResponse } from "next/server"
+import { cookies } from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server'
 
-import { API_VERSION, TOKEN_COOKIE, paperlessBackendUrl } from "@/lib/auth/cookies"
+import { buildPaperlessProxyUrl } from '@/lib/api/proxy'
+import {
+	API_VERSION,
+	TOKEN_COOKIE,
+	paperlessBackendUrl,
+} from '@/lib/auth/cookies'
 
 async function proxyRequest(request: NextRequest, path: string[]) {
-  const store = await cookies()
-  const token = store.get(TOKEN_COOKIE)?.value
-  if (!token) {
-    return NextResponse.json({ detail: "Authentication required." }, { status: 401 })
-  }
+	const store = await cookies()
+	const token = store.get(TOKEN_COOKIE)?.value
+	if (!token) {
+		return NextResponse.json(
+			{ detail: 'Authentication required.' },
+			{ status: 401 }
+		)
+	}
 
-  const search = request.nextUrl.search
-  const target = `${paperlessBackendUrl()}/api/${path.join("/")}/${search}`
-  const headers = new Headers()
-  headers.set("Authorization", `Token ${token}`)
-  headers.set("Accept", request.headers.get("accept") ?? `application/json; version=${API_VERSION}`)
+	const target = buildPaperlessProxyUrl(
+		paperlessBackendUrl(),
+		path,
+		request.nextUrl.search
+	)
+	if (!target) {
+		return NextResponse.json({ detail: 'Invalid API path.' }, { status: 400 })
+	}
 
-  const contentType = request.headers.get("content-type")
-  if (contentType) headers.set("Content-Type", contentType)
+	const headers = new Headers()
+	headers.set('Authorization', `Token ${token}`)
+	headers.set(
+		'Accept',
+		request.headers.get('accept') ?? `application/json; version=${API_VERSION}`
+	)
 
-  const method = request.method
-  const body =
-    method === "GET" || method === "HEAD" ? undefined : Buffer.from(await request.arrayBuffer())
+	const contentType = request.headers.get('content-type')
+	if (contentType) headers.set('Content-Type', contentType)
 
-  const upstream = await fetch(target, {
-    method,
-    headers,
-    body,
-    redirect: "manual",
-  })
+	const method = request.method
+	const body =
+		method === 'GET' || method === 'HEAD'
+			? undefined
+			: Buffer.from(await request.arrayBuffer())
 
-  const responseHeaders = new Headers()
-  const pass = ["content-type", "content-disposition", "content-length", "cache-control"]
-  for (const name of pass) {
-    const value = upstream.headers.get(name)
-    if (value) responseHeaders.set(name, value)
-  }
+	const upstream = await fetch(target, {
+		method,
+		headers,
+		body,
+		redirect: 'manual',
+	})
 
-  return new NextResponse(upstream.body, {
-    status: upstream.status,
-    headers: responseHeaders,
-  })
+	const responseHeaders = new Headers()
+	const pass = [
+		'content-type',
+		'content-disposition',
+		'content-length',
+		'cache-control',
+	]
+	for (const name of pass) {
+		const value = upstream.headers.get(name)
+		if (value) responseHeaders.set(name, value)
+	}
+
+	return new NextResponse(upstream.body, {
+		status: upstream.status,
+		headers: responseHeaders,
+	})
 }
 
-export async function GET(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
-  const { path } = await context.params
-  return proxyRequest(request, path)
+export async function GET(
+	request: NextRequest,
+	context: { params: Promise<{ path: string[] }> }
+) {
+	const { path } = await context.params
+	return proxyRequest(request, path)
 }
 
 export const POST = GET

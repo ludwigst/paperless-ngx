@@ -1,5 +1,5 @@
-import { DocumentExplorer } from "@/components/documents/document-explorer"
+import { DocumentExplorer } from '@/components/documents/document-explorer'
 
 export default function DocumentsPage() {
-  return <DocumentExplorer />
+	return <DocumentExplorer />
 }
