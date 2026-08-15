@@ -62,7 +62,7 @@ class TestRedisSocketConversion:
                 id="host_with_port_unchanged",
             ),
             # Credentials in unix:// URL contain multiple colons (user:password@)
-            # Regression test for https://github.com/paperless-ngx/paperless-ngx/pull/12239
+            # Regression test for https://github.com/ludwigst/paperless-ngx/pull/12239
             pytest.param(
                 "unix://user:password@/run/redis/redis.sock",
                 (

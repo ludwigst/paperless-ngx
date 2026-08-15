@@ -10,8 +10,8 @@ rules:
       - ci-docs.yml:45
       # steps.setup-python.outputs.python-version is always a semver string (e.g. "3.12.0")
       # produced by actions/setup-python from a hardcoded env var input.
-      - ci-docs.yml:88
-      - ci-docs.yml:92
+      - ci-docs.yml:87
+      - ci-docs.yml:91
       # needs.*.result is always one of: success/failure/cancelled/skipped.
       - ci-docs.yml:131
       - ci-docs.yml:132

@@ -1277,7 +1277,7 @@ class DocumentViewSet(
         except Exception as e:
             if "Data too long for column" in str(e):
                 logger.warning(
-                    "Detected a possible incompatible database column. See https://docs.paperless-ngx.com/troubleshooting/#convert-uuid-field",
+                    "Detected a possible incompatible database column. See https://github.com/ludwigst/paperless-ngx/tree/dev/docs/troubleshooting/#convert-uuid-field",
                 )
             logger.error(f"Error deleting document: {e!s}")
             return HttpResponseBadRequest(
@@ -2959,7 +2959,7 @@ class DocumentOperationPermissionMixin(PassUserMixin, DocumentSelectionMixin):
         description="Perform a bulk edit operation on a list of documents",
         external_docs={
             "description": "Further documentation",
-            "url": "https://docs.paperless-ngx.com/api/#bulk-editing",
+            "url": "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/api/#bulk-editing",
         },
         responses={
             200: inline_serializer(
@@ -3260,7 +3260,7 @@ class RemovePasswordDocumentsView(DocumentOperationPermissionMixin):
         description="Upload a document via the API",
         external_docs={
             "description": "Further documentation",
-            "url": "https://docs.paperless-ngx.com/api/#file-uploads",
+            "url": "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/api/#file-uploads",
         },
         responses={
             (200, "application/json"): OpenApiTypes.STR,
@@ -4774,7 +4774,7 @@ def serve_file(
         description="Perform a bulk edit operation on a list of objects",
         external_docs={
             "description": "Further documentation",
-            "url": "https://docs.paperless-ngx.com/api/#objects",
+            "url": "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/api/#objects",
         },
         responses={
             200: inline_serializer(

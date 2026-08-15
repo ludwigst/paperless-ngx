@@ -4,13 +4,13 @@ site_name = "Paperless-ngx"
 site_description = "Documentation for the Paperless-ngx document management system software."
 site_author = "the Paperless-ngx team"
 
-site_url = "https://docs.paperless-ngx.com/"
+site_url = "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/"
 
 copyright = """
 Copyright &copy; 2016 - 2026 Daniel Quinn, Jonas Winkler, and the Paperless-ngx team
 """
 
-repo_url = "https://github.com/paperless-ngx/paperless-ngx"
+repo_url = "https://github.com/ludwigst/paperless-ngx"
 repo_name = "paperless-ngx/paperless-ngx"
 
 nav = [
@@ -92,7 +92,7 @@ code = "Roboto Mono"
 # Extras
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
-link = "https://github.com/paperless-ngx/paperless-ngx"
+link = "https://github.com/ludwigst/paperless-ngx"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/docker"
@@ -100,7 +100,7 @@ link = "https://hub.docker.com/r/paperlessngx/paperless-ngx"
 
 [[project.extra.social]]
 icon = "material/chat"
-link = "https://matrix.to/#/#paperless:matrix.org"
+link = "https://github.com/ludwigst/paperless-ngx/discussions"
 
 # Extensions
 [project.markdown_extensions.attr_list]

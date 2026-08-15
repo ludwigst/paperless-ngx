@@ -32,9 +32,9 @@ to solve. The beauty of open source software is that you can see what's
 wrong and help to get it fixed for everyone!
 
 Before contributing please review our [code of
-conduct](https://github.com/paperless-ngx/paperless-ngx/blob/main/CODE_OF_CONDUCT.md)
+conduct](https://github.com/ludwigst/paperless-ngx/blob/main/CODE_OF_CONDUCT.md)
 and other important information in the [contributing
-guidelines](https://github.com/paperless-ngx/paperless-ngx/blob/main/CONTRIBUTING.md).
+guidelines](https://github.com/ludwigst/paperless-ngx/blob/main/CONTRIBUTING.md).
 
 ## Code formatting with pre-commit hooks
 
