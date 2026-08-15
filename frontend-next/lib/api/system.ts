@@ -4,6 +4,7 @@ import type {
 	Paginated,
 	PaperlessTask,
 	Statistics,
+	SystemStatus,
 	UiSettingsResponse,
 	User,
 	Workflow,
@@ -59,4 +60,23 @@ export function patchWorkflow(id: number, payload: Partial<Workflow>) {
 
 export function globalSearch(query: string) {
 	return apiFetch(`/api/paperless/search/${toQuery({ query })}`)
+}
+
+export function listLogFiles() {
+	return apiFetch<string[]>('/api/paperless/logs/')
+}
+
+export function getLogFile(key: string, limit = 5000) {
+	return apiFetch<string[]>(`/api/paperless/logs/${key}/${toQuery({ limit })}`)
+}
+
+export function getSystemStatus() {
+	return apiFetch<SystemStatus>('/api/paperless/status/')
+}
+
+export function runSystemTask(taskType: string) {
+	return apiFetch<{ task_id?: string }>('/api/paperless/tasks/run/', {
+		method: 'POST',
+		body: JSON.stringify({ task_type: taskType }),
+	})
 }

@@ -25,6 +25,8 @@ const ROUTES = [
 	{ href: '/workflows', label: 'Workflows' },
 	{ href: '/mail', label: 'Mail' },
 	{ href: '/tasks', label: 'Tasks' },
+	{ href: '/logs', label: 'Logs' },
+	{ href: '/status', label: 'System status' },
 	{ href: '/settings', label: 'Settings' },
 	{ href: '/admin/users', label: 'Users' },
 	{ href: '/admin/groups', label: 'Groups' },

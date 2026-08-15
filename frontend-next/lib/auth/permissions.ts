@@ -54,3 +54,16 @@ export function ownsObject(
 	if (owner == null) return true
 	return owner === user.id
 }
+
+export function canViewLogs(user: PermissionUser | null | undefined) {
+	return Boolean(user?.is_superuser || user?.is_staff)
+}
+
+export function canViewSystemStatus(
+	user: PermissionUser | null | undefined,
+	permissions?: string[]
+) {
+	if (!user) return false
+	if (user.is_superuser || user.is_staff) return true
+	return Boolean(permissions?.includes('view_system_monitoring'))
+}

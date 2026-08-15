@@ -30,5 +30,5 @@ Do not remove `src-ui/` until critical rows are complete and tested.
 | Share links                              |       ✓ |       ✓ |      ✓ |        ✓ |
 | PDF editor                               |       ✓ |         |        |          |
 | Chat / AI                                |       ✓ |         |        |          |
-| Logs / system status                     |       ✓ |         |        |          |
+| Logs / system status                     |       ✓ |       ✓ |      ✓ |        ✓ |
 | Docker production UI swap                |       ✓ |         |        |          |
