@@ -30,6 +30,8 @@ export const queryKeys = {
 	storagePaths: ['storage-paths'] as const,
 	customFields: ['custom-fields'] as const,
 	savedViews: ['saved-views'] as const,
+	savedView: (id: number) => ['saved-view', id] as const,
+	trash: (params: unknown) => ['trash', params] as const,
 	tasks: ['tasks'] as const,
 	users: ['users'] as const,
 	groups: ['groups'] as const,

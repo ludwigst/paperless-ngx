@@ -2,6 +2,7 @@
 
 import {
 	Archive,
+	Bookmark,
 	FileStack,
 	FolderTree,
 	Inbox,
@@ -11,6 +12,7 @@ import {
 	Search,
 	Settings,
 	Tags,
+	Trash2,
 	Users,
 	Workflow,
 } from 'lucide-react'
@@ -43,6 +45,7 @@ const NAV = [
 		type: 'document' as const,
 	},
 	{ href: '/inbox', label: 'Inbox', icon: Inbox, type: 'document' as const },
+	{ href: '/trash', label: 'Trash', icon: Trash2, type: 'document' as const },
 	{ href: '/tags', label: 'Tags', icon: Tags, type: 'tag' as const },
 	{
 		href: '/correspondents',
@@ -96,12 +99,13 @@ function NavLinks({
 	return (
 		<nav className="flex flex-col gap-0.5 px-2" aria-label="Primary">
 			{NAV.map((item) => {
+				const action = item.href === '/trash' ? 'delete' : 'view'
 				const allowed =
 					isSuperuser ||
 					can(
 						{ id: 0, is_superuser: isSuperuser },
 						permissions,
-						'view',
+						action,
 						item.type
 					)
 				if (!allowed) return null
@@ -152,6 +156,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 				},
 				'g+d': () => router.push('/documents'),
 				'g+i': () => router.push('/inbox'),
+				'g+t': () => router.push('/trash'),
+				'g+v': () => router.push('/saved-views'),
 				'g+s': () => router.push('/settings'),
 			}),
 			[router]
@@ -184,29 +190,50 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 				isSuperuser={user?.is_superuser}
 				onNavigate={() => setMobileOpen(false)}
 			/>
-			{views.data?.results?.filter((view) => view.show_in_sidebar).length ? (
+			{views.sidebar.length ? (
 				<>
 					<Separator className="my-3" />
 					<p className="px-4 pb-1 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
 						Saved views
 					</p>
 					<nav className="flex flex-col gap-0.5 px-2" aria-label="Saved views">
-						{views.data.results
-							.filter((view) => view.show_in_sidebar)
-							.map((view) => (
+						{views.sidebar.map((view) => {
+							const href = `/view/${view.id}`
+							const active = pathname === href
+							return (
 								<Link
 									key={view.id}
-									href={`/documents?view=${view.id}`}
+									href={href}
 									onClick={() => setMobileOpen(false)}
-									className="rounded-lg px-2.5 py-1.5 text-sm text-muted-foreground hover:bg-sidebar-accent/70 hover:text-foreground"
+									className={cn(
+										'rounded-lg px-2.5 py-1.5 text-sm',
+										active
+											? 'bg-sidebar-accent text-sidebar-accent-foreground'
+											: 'text-muted-foreground hover:bg-sidebar-accent/70 hover:text-foreground'
+									)}
 								>
 									{view.name}
 								</Link>
-							))}
+							)
+						})}
 					</nav>
 				</>
 			) : null}
 			<div className="mt-auto p-3">
+				{can(user, ui.data?.permissions, 'view', 'savedview') ? (
+					<Link
+						href="/saved-views"
+						className={cn(
+							'flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm',
+							pathname === '/saved-views'
+								? 'bg-sidebar-accent text-sidebar-accent-foreground'
+								: 'text-muted-foreground hover:bg-sidebar-accent/70 hover:text-foreground'
+						)}
+					>
+						<Bookmark className="size-4" />
+						Manage views
+					</Link>
+				) : null}
 				<Link
 					href="/settings"
 					className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm text-muted-foreground hover:bg-sidebar-accent/70 hover:text-foreground"
