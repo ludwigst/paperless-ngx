@@ -15,6 +15,8 @@ import {
 const ROUTES = [
 	{ href: '/documents', label: 'Documents' },
 	{ href: '/inbox', label: 'Inbox' },
+	{ href: '/trash', label: 'Trash' },
+	{ href: '/saved-views', label: 'Saved views' },
 	{ href: '/tags', label: 'Tags' },
 	{ href: '/correspondents', label: 'Correspondents' },
 	{ href: '/document-types', label: 'Document types' },

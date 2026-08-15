@@ -29,6 +29,22 @@ export const listCustomFields = () =>
 	listResource<CustomField>('custom_fields')
 export const listSavedViews = () => listResource<SavedView>('saved_views')
 
+export function getSavedView(id: number) {
+	return apiFetch<SavedView>(`/api/paperless/saved_views/${id}/`)
+}
+
+export function createSavedView(payload: Partial<SavedView>) {
+	return createNamed<SavedView>('saved_views', payload)
+}
+
+export function updateSavedView(id: number, payload: Partial<SavedView>) {
+	return updateNamed<SavedView>('saved_views', id, payload)
+}
+
+export function deleteSavedView(id: number) {
+	return deleteNamed('saved_views', id)
+}
+
 export function createNamed<T>(resource: string, payload: unknown) {
 	return apiFetch<T>(`/api/paperless/${resource}/`, {
 		method: 'POST',
