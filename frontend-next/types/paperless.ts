@@ -77,6 +77,19 @@ export interface CustomFieldInstance extends ObjectWithId {
 	value?: unknown
 }
 
+export interface DocumentSuggestions {
+	title?: string
+	tags?: number[]
+	suggested_tags?: string[]
+	correspondents?: number[]
+	suggested_correspondents?: string[]
+	document_types?: number[]
+	suggested_document_types?: string[]
+	storage_paths?: number[]
+	suggested_storage_paths?: string[]
+	dates?: string[]
+}
+
 export interface DocumentNote extends ObjectWithId {
 	created?: string
 	note?: string

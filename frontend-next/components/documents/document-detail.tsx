@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Download, Link2, Save, Trash2 } from 'lucide-react'
+import { ArrowLeft, Download, Link2, Save, Sparkles, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -11,6 +11,7 @@ import { CustomFieldEditor } from '@/components/documents/custom-field-editor'
 import { DocumentHistory } from '@/components/documents/document-history'
 import { DocumentNotes } from '@/components/documents/document-notes'
 import { ShareLinksDialog } from '@/components/documents/share-links-dialog'
+import { SuggestionChips } from '@/components/documents/suggestion-chips'
 import { TagPicker } from '@/components/documents/tag-picker'
 import {
 	AlertDialog,
@@ -36,7 +37,7 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
-import { usePermission } from '@/hooks/use-auth'
+import { usePermission, useUiSettings } from '@/hooks/use-auth'
 import {
 	useCorrespondents,
 	useCustomFields,
@@ -49,17 +50,25 @@ import {
 	documentDownloadUrl,
 	documentPreviewUrl,
 	getDocument,
+	getDocumentSuggestions,
 	patchDocument,
 } from '@/lib/api/documents'
+import { createNamed } from '@/lib/api/metadata'
 import { queryKeys } from '@/lib/query'
+import { hasInboxTag, isAiEnabled } from '@/lib/utils/chat'
 import type { CustomFieldInstance } from '@/types/paperless'
 
 export function DocumentDetail({ id }: { id: number }) {
 	const router = useRouter()
 	const queryClient = useQueryClient()
+	const ui = useUiSettings()
 	const canShare = usePermission('add', 'sharelink')
 	const canChange = usePermission('change', 'document')
 	const canDelete = usePermission('delete', 'document')
+	const canAddTag = usePermission('add', 'tag')
+	const canAddCorrespondent = usePermission('add', 'correspondent')
+	const canAddType = usePermission('add', 'documenttype')
+	const canAddPath = usePermission('add', 'storagepath')
 	const documentQuery = useQuery({
 		queryKey: queryKeys.document(id),
 		queryFn: () => getDocument(id),
@@ -78,8 +87,20 @@ export function DocumentDetail({ id }: { id: number }) {
 	const [asn, setAsn] = useState<string>()
 	const [shareOpen, setShareOpen] = useState(false)
 	const [confirmDelete, setConfirmDelete] = useState(false)
+	const [askSuggestions, setAskSuggestions] = useState(false)
 
 	const doc = documentQuery.data
+	const tagList = tags.data?.results ?? []
+	const correspondentList = correspondents.data?.results ?? []
+	const typeList = types.data?.results ?? []
+	const pathList = paths.data?.results ?? []
+	const aiEnabled = isAiEnabled(ui.data?.settings)
+	const inboxTagged = hasInboxTag(doc?.tags, tagList)
+	const suggestions = useQuery({
+		queryKey: queryKeys.documentSuggestions(id),
+		queryFn: () => getDocumentSuggestions(id, aiEnabled),
+		enabled: canChange && Boolean(doc) && (inboxTagged || askSuggestions),
+	})
 	const draft = {
 		title: title ?? doc?.title ?? '',
 		correspondent:
@@ -136,6 +157,25 @@ export function DocumentDetail({ id }: { id: number }) {
 		onError: (error) => toast.error(error.message),
 	})
 
+	async function createNamedItem(
+		resource: 'tags' | 'correspondents' | 'document_types' | 'storage_paths',
+		queryKey: readonly string[],
+		name: string,
+		apply: (createdId: number) => void
+	) {
+		try {
+			const created = await createNamed<{ id: number; name: string }>(
+				resource,
+				{ name }
+			)
+			apply(created.id)
+			await queryClient.invalidateQueries({ queryKey })
+			toast.success(`Created “${created.name}”`)
+		} catch (error) {
+			toast.error(error instanceof Error ? error.message : 'Could not create')
+		}
+	}
+
 	if (documentQuery.isLoading) {
 		return <Skeleton className="h-[70vh] w-full" />
 	}
@@ -158,6 +198,16 @@ export function DocumentDetail({ id }: { id: number }) {
 					</Link>
 				</Button>
 				<div className="ml-auto flex flex-wrap gap-2">
+					{canChange ? (
+						<Button
+							variant="outline"
+							onClick={() => setAskSuggestions(true)}
+							disabled={suggestions.isFetching}
+						>
+							<Sparkles className="size-4" />
+							{suggestions.isFetching ? 'Suggesting…' : 'Suggest'}
+						</Button>
+					) : null}
 					{canShare ? (
 						<Button variant="outline" onClick={() => setShareOpen(true)}>
 							<Link2 className="size-4" />
@@ -229,24 +279,109 @@ export function DocumentDetail({ id }: { id: number }) {
 									value={draft.title}
 									onChange={(event) => setTitle(event.target.value)}
 								/>
+								{suggestions.data?.title &&
+								suggestions.data.title !== draft.title ? (
+									<SuggestionChips
+										items={[
+											{
+												key: suggestions.data.title,
+												label: suggestions.data.title,
+											},
+										]}
+										onPick={(value) => setTitle(value)}
+									/>
+								) : null}
 							</div>
 							<MetadataSelect
 								label="Correspondent"
 								value={draft.correspondent}
-								options={correspondents.data?.results ?? []}
+								options={correspondentList}
 								onChange={setCorrespondent}
+							/>
+							<SuggestionChips
+								items={namedSuggestions(
+									suggestions.data?.correspondents,
+									correspondentList,
+									draft.correspondent
+								).concat(
+									canAddCorrespondent
+										? novelSuggestions(
+												suggestions.data?.suggested_correspondents
+											)
+										: []
+								)}
+								onPick={(key) => {
+									if (key.startsWith('create:')) {
+										void createNamedItem(
+											'correspondents',
+											queryKeys.correspondents,
+											key.slice(7),
+											setCorrespondent
+										)
+										return
+									}
+									setCorrespondent(Number(key))
+								}}
 							/>
 							<MetadataSelect
 								label="Document type"
 								value={draft.document_type}
-								options={types.data?.results ?? []}
+								options={typeList}
 								onChange={setDocumentType}
+							/>
+							<SuggestionChips
+								items={namedSuggestions(
+									suggestions.data?.document_types,
+									typeList,
+									draft.document_type
+								).concat(
+									canAddType
+										? novelSuggestions(
+												suggestions.data?.suggested_document_types
+											)
+										: []
+								)}
+								onPick={(key) => {
+									if (key.startsWith('create:')) {
+										void createNamedItem(
+											'document_types',
+											queryKeys.documentTypes,
+											key.slice(7),
+											setDocumentType
+										)
+										return
+									}
+									setDocumentType(Number(key))
+								}}
 							/>
 							<MetadataSelect
 								label="Storage path"
 								value={draft.storage_path}
-								options={paths.data?.results ?? []}
+								options={pathList}
 								onChange={setStoragePath}
+							/>
+							<SuggestionChips
+								items={namedSuggestions(
+									suggestions.data?.storage_paths,
+									pathList,
+									draft.storage_path
+								).concat(
+									canAddPath
+										? novelSuggestions(suggestions.data?.suggested_storage_paths)
+										: []
+								)}
+								onPick={(key) => {
+									if (key.startsWith('create:')) {
+										void createNamedItem(
+											'storage_paths',
+											queryKeys.storagePaths,
+											key.slice(7),
+											setStoragePath
+										)
+										return
+									}
+									setStoragePath(Number(key))
+								}}
 							/>
 							<div className="space-y-2">
 								<Label htmlFor="asn">Archive serial</Label>
@@ -266,11 +401,44 @@ export function DocumentDetail({ id }: { id: number }) {
 								<Label>Tags</Label>
 								<div className="mt-2">
 									<TagPicker
-										tags={tags.data?.results ?? []}
+										tags={tagList}
 										selected={draft.tags}
 										onChange={setTagIds}
 									/>
 								</div>
+								<SuggestionChips
+									items={tagList
+										.filter(
+											(tag) =>
+												suggestions.data?.tags?.includes(tag.id) &&
+												!draft.tags.includes(tag.id)
+										)
+										.map((tag) => ({
+											key: String(tag.id),
+											label: tag.name,
+										}))
+										.concat(
+											canAddTag
+												? novelSuggestions(suggestions.data?.suggested_tags)
+												: []
+										)}
+									onPick={(key) => {
+										if (key.startsWith('create:')) {
+											void createNamedItem(
+												'tags',
+												queryKeys.tags,
+												key.slice(7),
+												(createdId) =>
+													setTagIds([...draft.tags, createdId])
+											)
+											return
+										}
+										const next = Number(key)
+										if (!draft.tags.includes(next)) {
+											setTagIds([...draft.tags, next])
+										}
+									}}
+								/>
 							</div>
 							<Separator />
 							<dl className="grid grid-cols-2 gap-2 text-sm">
@@ -351,6 +519,30 @@ export function DocumentDetail({ id }: { id: number }) {
 			</AlertDialog>
 		</div>
 	)
+}
+
+function namedSuggestions(
+	ids: number[] | undefined,
+	options: Array<{ id: number; name: string }>,
+	current?: number | null
+) {
+	return (ids ?? [])
+		.filter((id) => id !== current)
+		.map((id) => {
+			const option = options.find((item) => item.id === id)
+			return option
+				? { key: String(option.id), label: option.name }
+				: null
+		})
+		.filter(Boolean) as Array<{ key: string; label: string }>
+}
+
+function novelSuggestions(names?: string[]) {
+	return (names ?? []).map((name) => ({
+		key: `create:${name}`,
+		label: name,
+		create: true,
+	}))
 }
 
 function MetadataSelect({

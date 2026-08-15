@@ -35,6 +35,7 @@ export const queryKeys = {
 	documentNotes: (id: number) => ['document-notes', id] as const,
 	documentHistory: (id: number) => ['document-history', id] as const,
 	shareLinks: (documentId: number) => ['share-links', documentId] as const,
+	documentSuggestions: (id: number) => ['document-suggestions', id] as const,
 	tasks: ['tasks'] as const,
 	users: ['users'] as const,
 	groups: ['groups'] as const,

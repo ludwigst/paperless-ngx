@@ -29,6 +29,7 @@ import { CommandPalette } from '@/components/app-shell/command-palette'
 import { GlobalSearch } from '@/components/app-shell/global-search'
 import { TaskIndicator } from '@/components/app-shell/task-indicator'
 import { ThemeToggle } from '@/components/app-shell/theme-toggle'
+import { DocumentChat } from '@/components/chat/document-chat'
 import { UploadDropzone } from '@/components/upload/upload-dropzone'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -38,6 +39,7 @@ import { useHotkeys } from '@/hooks/use-hotkeys'
 import { useSavedViews } from '@/hooks/use-metadata'
 import { can, canViewLogs, canViewSystemStatus } from '@/lib/auth/permissions'
 import { cn } from '@/lib/utils'
+import { isAiEnabled } from '@/lib/utils/chat'
 import { displayName } from '@/lib/utils/search-params'
 
 const NAV = [
@@ -311,6 +313,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 								<Search className="size-4" />
 							</Button>
 							<TaskIndicator />
+							{isAiEnabled(ui.data?.settings) ? <DocumentChat /> : null}
 							<ThemeToggle />
 							<UserMenu
 								name={displayName(
