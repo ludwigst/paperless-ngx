@@ -10,13 +10,13 @@ Do not remove `src-ui/` until critical rows are complete and tested.
 | Documents list + pagination              |       ✓ |       ✓ |        |        ✓ |
 | Search / URL filters                     |       ✓ |       ✓ |      ✓ |        ✓ |
 | Inbox                                    |       ✓ |       ✓ |        |        ✓ |
-| Document detail + preview                |       ✓ |       ✓ |        |  partial |
+| Document detail + preview                |       ✓ |       ✓ |      ✓ |        ✓ |
 | Upload / drag-and-drop                   |       ✓ |       ✓ |        |        ✓ |
 | Tags CRUD                                |       ✓ |       ✓ |        |        ✓ |
 | Correspondents CRUD                      |       ✓ |       ✓ |        |        ✓ |
 | Document types CRUD                      |       ✓ |       ✓ |        |        ✓ |
 | Storage paths CRUD                       |       ✓ |       ✓ |        |        ✓ |
-| Custom fields                            |       ✓ |       ✓ |        |  partial |
+| Custom fields                            |       ✓ |       ✓ |      ✓ |        ✓ |
 | Bulk operations                          |       ✓ |       ✓ |        |  partial |
 | Tasks                                    |       ✓ |       ✓ |        |  partial |
 | Workflows                                |       ✓ |       ✓ |        |  partial |
@@ -27,7 +27,7 @@ Do not remove `src-ui/` until critical rows are complete and tested.
 | Saved views                              |       ✓ |       ✓ |      ✓ |        ✓ |
 | Mail                                     |       ✓ |         |        |          |
 | Trash                                    |       ✓ |       ✓ |      ✓ |        ✓ |
-| Share links                              |       ✓ |         |        |          |
+| Share links                              |       ✓ |       ✓ |      ✓ |        ✓ |
 | PDF editor                               |       ✓ |         |        |          |
 | Chat / AI                                |       ✓ |         |        |          |
 | Logs / system status                     |       ✓ |         |        |          |
