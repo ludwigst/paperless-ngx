@@ -31,4 +31,26 @@ describe('buildPaperlessProxyUrl', () => {
 	it('rejects an invalid backend URL', () => {
 		expect(buildPaperlessProxyUrl('not-a-url', ['documents'])).toBeNull()
 	})
+
+	it('allows mail account test and process paths', () => {
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', [
+				'mail_accounts',
+				'test',
+			])?.pathname
+		).toBe('/api/mail_accounts/test/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', [
+				'mail_accounts',
+				'4',
+				'process',
+			])?.pathname
+		).toBe('/api/mail_accounts/4/process/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', [
+				'processed_mail',
+				'bulk_delete',
+			])?.pathname
+		).toBe('/api/processed_mail/bulk_delete/')
+	})
 })

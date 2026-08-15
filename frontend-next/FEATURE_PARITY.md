@@ -25,7 +25,7 @@ Do not remove `src-ui/` until critical rows are complete and tested.
 | Keyboard shortcuts                       |       ✓ |       ✓ |        |  partial |
 | Mobile / responsive                      |       ✓ |       ✓ |        |  partial |
 | Saved views                              |       ✓ |       ✓ |      ✓ |        ✓ |
-| Mail                                     |       ✓ |         |        |          |
+| Mail                                     |       ✓ |       ✓ |      ✓ |        ✓ |
 | Trash                                    |       ✓ |       ✓ |      ✓ |        ✓ |
 | Share links                              |       ✓ |       ✓ |      ✓ |        ✓ |
 | PDF editor                               |       ✓ |         |        |          |

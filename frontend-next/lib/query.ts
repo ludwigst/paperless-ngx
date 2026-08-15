@@ -39,4 +39,7 @@ export const queryKeys = {
 	users: ['users'] as const,
 	groups: ['groups'] as const,
 	workflows: ['workflows'] as const,
+	mailAccounts: ['mail-accounts'] as const,
+	mailRules: ['mail-rules'] as const,
+	processedMail: (ruleId: number) => ['processed-mail', ruleId] as const,
 }

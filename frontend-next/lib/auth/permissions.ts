@@ -14,6 +14,7 @@ export type PermissionType =
 	| 'note'
 	| 'mailaccount'
 	| 'mailrule'
+	| 'processedmail'
 	| 'user'
 	| 'group'
 	| 'sharelink'
@@ -42,4 +43,14 @@ export function can(
 	if (!user) return false
 	if (user.is_superuser) return true
 	return Boolean(permissions?.includes(permissionCode(action, type)))
+}
+
+export function ownsObject(
+	user: PermissionUser | null | undefined,
+	owner?: number | null
+) {
+	if (!user) return false
+	if (user.is_superuser) return true
+	if (owner == null) return true
+	return owner === user.id
 }
