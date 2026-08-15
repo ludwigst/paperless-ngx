@@ -66,5 +66,11 @@ describe('buildPaperlessProxyUrl', () => {
 			buildPaperlessProxyUrl('http://localhost:8000', ['tasks', 'run'])
 				?.pathname
 		).toBe('/api/tasks/run/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', [
+				'documents',
+				'edit_pdf',
+			])?.pathname
+		).toBe('/api/documents/edit_pdf/')
 	})
 })
