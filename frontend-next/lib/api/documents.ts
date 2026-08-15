@@ -5,6 +5,7 @@ import type {
 	Document,
 	DocumentNote,
 	Paginated,
+	SelectionData,
 } from '@/types/paperless'
 
 export interface DocumentListParams {
@@ -48,6 +49,13 @@ export function patchDocument(
 export function deleteDocument(id: number) {
 	return apiFetch<void>(`/api/paperless/documents/${id}/`, {
 		method: 'DELETE',
+	})
+}
+
+export function getSelectionData(documents: number[]) {
+	return apiFetch<SelectionData>('/api/paperless/documents/selection_data/', {
+		method: 'POST',
+		body: JSON.stringify({ documents }),
 	})
 }
 

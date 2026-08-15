@@ -31,13 +31,14 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
-import { useUiSettings } from '@/hooks/use-auth'
+import { usePermission, useUiSettings } from '@/hooks/use-auth'
 import { useDocuments } from '@/hooks/use-documents'
 import {
 	lookupName,
 	useCorrespondents,
 	useDocumentTypes,
 	useSavedView,
+	useStoragePaths,
 	useTags,
 } from '@/hooks/use-metadata'
 import {
@@ -60,6 +61,7 @@ import {
 	toggleId,
 } from '@/lib/utils/saved-views'
 import { searchParamsToQuery } from '@/lib/utils/search-params'
+import { wantsBulkConfirmation } from '@/lib/utils/bulk-edit'
 import type { BulkEditMethod } from '@/types/paperless'
 
 export function DocumentExplorer({
@@ -83,7 +85,13 @@ export function DocumentExplorer({
 	const tags = useTags()
 	const correspondents = useCorrespondents()
 	const types = useDocumentTypes()
+	const paths = useStoragePaths()
 	const ui = useUiSettings()
+	const canChange = usePermission('change', 'document')
+	const canViewTags = usePermission('view', 'tag')
+	const canViewCorrespondents = usePermission('view', 'correspondent')
+	const canViewTypes = usePermission('view', 'documenttype')
+	const canViewPaths = usePermission('view', 'storagepath')
 	const [selected, setSelected] = useState<number[]>([])
 	const [saveOpen, setSaveOpen] = useState(false)
 	const [viewName, setViewName] = useState('')
@@ -294,22 +302,18 @@ export function DocumentExplorer({
 				<BulkBar
 					count={selected.length}
 					pending={bulk.isPending}
+					confirm={wantsBulkConfirmation(ui.data?.settings)}
+					tags={tags.data?.results ?? []}
+					correspondents={correspondents.data?.results ?? []}
+					documentTypes={types.data?.results ?? []}
+					storagePaths={paths.data?.results ?? []}
+					canChange={canChange}
+					canViewTags={canViewTags}
+					canViewCorrespondents={canViewCorrespondents}
+					canViewTypes={canViewTypes}
+					canViewPaths={canViewPaths}
 					onClear={() => setSelected([])}
-					onArchive={() => {
-						const inboxTags =
-							tags.data?.results
-								.filter((tag) => tag.is_inbox_tag)
-								.map((tag) => tag.id) ?? []
-						bulk.mutate({
-							method: 'modify_tags',
-							parameters: { add_tags: [], remove_tags: inboxTags },
-						})
-					}}
-					onDelete={() => {
-						if (confirm(`Delete ${selected.length} documents?`)) {
-							bulk.mutate({ method: 'delete' })
-						}
-					}}
+					onEdit={(input) => bulk.mutate(input)}
 				/>
 			) : null}
 
