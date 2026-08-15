@@ -34,7 +34,7 @@ export function getDocument(id: number) {
 
 export function patchDocument(
 	id: number,
-	payload: Partial<Document> & {
+	payload: Partial<Omit<Document, 'custom_fields'>> & {
 		remove_inbox_tags?: boolean
 		custom_fields?: Array<{ field: number; value?: unknown }>
 	}
