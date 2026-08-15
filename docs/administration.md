@@ -75,7 +75,7 @@ copies you created in the steps above.
 If a new release of paperless-ngx is available, upgrading depends on how
 you installed paperless-ngx in the first place. The releases are
 available at the [release
-page](https://github.com/paperless-ngx/paperless-ngx/releases).
+page](https://github.com/ludwigst/paperless-ngx/releases).
 
 First of all, make sure no active processes (like consumption) are running, then [make a backup](#backup).
 
@@ -116,17 +116,17 @@ the background.
     won't automatically update to newer versions. In order to enable
     updates as described above, either get the new `docker-compose.yml`
     file from
-    [here](https://github.com/paperless-ngx/paperless-ngx/tree/main/docker/compose)
+    [here](https://github.com/ludwigst/paperless-ngx/tree/main/docker/compose)
     or edit the `docker-compose.yml` file, find the line that says
 
     ```
-    image: ghcr.io/paperless-ngx/paperless-ngx:0.9.x
+    image: ghcr.io/ludwigst/paperless-ngx:0.9.x
     ```
 
     and replace the version with `latest`:
 
     ```
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    image: ghcr.io/ludwigst/paperless-ngx:latest
     ```
 
 !!! note
@@ -139,14 +139,14 @@ the background.
     `docker-compose.yml` find the line that says
 
     ```
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    image: ghcr.io/ludwigst/paperless-ngx:latest
     ```
 
     and replace the version with the series you want to track, for
     example:
 
     ```
-    image: ghcr.io/paperless-ngx/paperless-ngx:1.7
+    image: ghcr.io/ludwigst/paperless-ngx:1.7
     ```
 
 ### Bare Metal Route {#bare-metal-updating}

@@ -21,7 +21,7 @@ jobs:
           any-of-issue-labels: 'cant-reproduce,not a bug'
           stale-issue-label: stale
           stale-issue-message: >
-            This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. See our [contributing guidelines](https://github.com/paperless-ngx/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.
+            This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. See our [contributing guidelines](https://github.com/ludwigst/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.
 
           days-before-pr-stale: 14
           days-before-pr-close: 7
@@ -47,13 +47,13 @@ jobs:
           discussion-inactive-days: '30'
           log-output: true
           issue-comment: >
-            This issue has been automatically locked since there has not been any recent activity after it was closed. Please open a new discussion or issue for related concerns. See our [contributing guidelines](https://github.com/paperless-ngx/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.
+            This issue has been automatically locked since there has not been any recent activity after it was closed. Please open a new discussion or issue for related concerns. See our [contributing guidelines](https://github.com/ludwigst/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.
 
           pr-comment: >
-            This pull request has been automatically locked since there has not been any recent activity after it was closed. Please open a new discussion or issue for related concerns. See our [contributing guidelines](https://github.com/paperless-ngx/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.
+            This pull request has been automatically locked since there has not been any recent activity after it was closed. Please open a new discussion or issue for related concerns. See our [contributing guidelines](https://github.com/ludwigst/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.
 
           discussion-comment: >
-            This discussion has been automatically locked since there has not been any recent activity after it was closed. Please open a new discussion for related concerns. See our [contributing guidelines](https://github.com/paperless-ngx/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.
+            This discussion has been automatically locked since there has not been any recent activity after it was closed. Please open a new discussion for related concerns. See our [contributing guidelines](https://github.com/ludwigst/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.
 
   close-answered-discussions:
     name: 'Close Answered Discussions'
@@ -97,7 +97,7 @@ jobs:
               }`;
               const commentVariables = {
                 discussion: discussion.id,
-                body: 'This discussion has been automatically closed because it was marked as answered. Please see our [contributing guidelines](https://github.com/paperless-ngx/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.',
+                body: 'This discussion has been automatically closed because it was marked as answered. Please see our [contributing guidelines](https://github.com/ludwigst/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.',
               }
               await github.graphql(addCommentMutation, commentVariables)
 
@@ -190,7 +190,7 @@ jobs:
                 }`;
                 const commentVariables = {
                   discussion: discussion.id,
-                  body: 'This discussion has been automatically closed due to inactivity. Please see our [contributing guidelines](https://github.com/paperless-ngx/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.',
+                  body: 'This discussion has been automatically closed due to inactivity. Please see our [contributing guidelines](https://github.com/ludwigst/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.',
                 }
                 await github.graphql(addCommentMutation, commentVariables);
 
@@ -280,7 +280,7 @@ jobs:
                 }`;
                 const commentVariables = {
                   discussion: discussion.id,
-                  body: 'This discussion has been automatically closed due to lack of community support. Please see our [contributing guidelines](https://github.com/paperless-ngx/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.',
+                  body: 'This discussion has been automatically closed due to lack of community support. Please see our [contributing guidelines](https://github.com/ludwigst/paperless-ngx/blob/dev/CONTRIBUTING.md#automatic-repository-maintenance) for more details.',
                 }
                 await github.graphql(addCommentMutation, commentVariables);
 

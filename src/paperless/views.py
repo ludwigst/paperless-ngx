@@ -405,7 +405,7 @@ class GenerateAuthTokenView(GenericAPIView[Any]):
         description="Get the application configuration",
         external_docs={
             "description": "Application Configuration",
-            "url": "https://docs.paperless-ngx.com/configuration/",
+            "url": "https://github.com/ludwigst/paperless-ngx/tree/dev/docs/configuration/",
         },
     ),
 )

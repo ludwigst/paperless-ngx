@@ -496,7 +496,7 @@ class TestWhooshUnitAbbreviations:
     Whoosh's PlusMinus date grammar accepted abbreviated unit spellings
     (e.g. "yrs", "mos", "wks", "hrs", "mins", "secs"); saved views/searches
     created under the old Whoosh backend can contain those tokens (see
-    https://github.com/paperless-ngx/paperless-ngx/issues/13482), so the
+    https://github.com/ludwigst/paperless-ngx/issues/13482), so the
     Tantivy translator must still accept them.
     """
 

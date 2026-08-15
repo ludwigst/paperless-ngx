@@ -6,18 +6,10 @@ title: Home
 ![image](assets/logo_full_black.svg#only-light){.index-logo}
 ![image](assets/logo_full_eee.svg#only-dark){.index-logo}
 
-**Paperless-ngx** is a _community-supported_ open-source document management system that transforms your
+**Paperless-ngx** is an open-source document management system that transforms your
 physical documents into a searchable online archive so you can keep, well, _less paper_.
 
 [Get started](setup.md){ .md-button .md-button--primary .index-callout }
-[Demo](https://demo.paperless-ngx.com){ .md-button .md-button--secondary target=\_blank }
-
-<div style="display: flex; justify-content: end; margin-top: -1.5rem;">
-  <a href="https://m.do.co/c/8d70b916d462" target="_blank">
-    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_white.svg#only-dark" class="no-lightbox" width="150px">
-    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_black.svg#only-light" class="no-lightbox" width="150px">
-  </a>
-</div>
 
 </div>
 <div class="grid-right" markdown>
@@ -60,14 +52,11 @@ physical documents into a searchable online archive so you can keep, well, _less
 - **Optimized** for multi core systems: Paperless-ngx consumes multiple documents in parallel.
 - The integrated sanity checker makes sure that your document archive is in good health.
 
-[^1]: Office document and email consumption support is optional and provided by Apache Tika (see [configuration](https://docs.paperless-ngx.com/configuration/#tika))
+[^1]: Office document and email consumption support is optional and provided by Apache Tika (see [configuration](https://github.com/ludwigst/paperless-ngx/tree/dev/docs/configuration/#tika))
 
 ## Paperless, a history
 
-Paperless-ngx is the official successor to the original [Paperless](https://github.com/the-paperless-project/paperless) & [Paperless-ng](https://github.com/jonaswinkler/paperless-ng) projects and is designed to distribute the responsibility of advancing and supporting the project among a team of people. [Consider joining us!](https://github.com/paperless-ngx/paperless-ngx#community-support)
-
-Further discussion of the transition between these projects can be found at
-[ng#1599](https://github.com/jonaswinkler/paperless-ng/issues/1599) and [ng#1632](https://github.com/jonaswinkler/paperless-ng/issues/1632).
+This codebase continues the Paperless document-management lineage. The Django backend, processing pipeline, and API remain the foundation of this repository.
 
 ## Screenshots
 
@@ -188,24 +177,20 @@ Mobile devices are supported.
 
 ## Support
 
-Community support is available via [GitHub Discussions](https://github.com/paperless-ngx/paperless-ngx/discussions/) and [the Matrix chat room](https://matrix.to/#/#paperless:matrix.org).
+Questions and issues can be filed in this repository.
 
 ### Feature Requests
 
-Feature requests can be submitted via [GitHub Discussions](https://github.com/paperless-ngx/paperless-ngx/discussions/categories/feature-requests) where you can search for existing ideas, add your own and vote for the ones you care about.
+Open a discussion or issue describing the request and why it is useful.
 
 ### Bugs
 
-For bugs please [open an issue](https://github.com/paperless-ngx/paperless-ngx/issues) or [start a discussion](https://github.com/paperless-ngx/paperless-ngx/discussions/categories/support) if you have questions.
+Open an issue with reproduction steps.
 
 ## Contributing
 
-People interested in continuing the work on paperless-ngx are encouraged to reach out on [GitHub](https://github.com/paperless-ngx/paperless-ngx) or [the Matrix chat room](https://matrix.to/#/#paperless:matrix.org). If you would like to contribute to the project on an ongoing basis there are multiple teams (frontend, ci/cd, etc) that could use your help so please reach out!
-
-### Translation
-
-Paperless-ngx is available in many languages that are coordinated on [Crowdin](https://crowdin.com/project/paperless-ngx). If you want to help out by translating paperless-ngx into your language, please head over to the [Paperless-ngx project at Crowdin](https://crowdin.com/project/paperless-ngx), and thank you!
+See [CONTRIBUTING.md](https://github.com/ludwigst/paperless-ngx/blob/dev/CONTRIBUTING.md).
 
 ## Scanners & Software
 
-Paperless-ngx is compatible with many different scanners and scanning tools. A user-maintained list of scanners and other software is available on [the wiki](https://github.com/paperless-ngx/paperless-ngx/wiki/Scanner-&-Software-Recommendations).
+Paperless-ngx is compatible with many different scanners and scanning tools. A user-maintained list of scanners and other software is available on [the wiki](https://github.com/ludwigst/paperless-ngx/wiki/Scanner-&-Software-Recommendations).

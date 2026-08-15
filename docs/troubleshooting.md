@@ -274,4 +274,4 @@ $ python3 manage.py convert_mariadb_uuid
 
 ## Platform-Specific Deployment Troubleshooting
 
-A user-maintained wiki page is available to help troubleshoot issues that may arise when trying to deploy Paperless-ngx on specific platforms, for example SELinux. Please see [the wiki](https://github.com/paperless-ngx/paperless-ngx/wiki/Platform%E2%80%90Specific-Troubleshooting).
+A user-maintained wiki page is available to help troubleshoot issues that may arise when trying to deploy Paperless-ngx on specific platforms, for example SELinux. Please see [the wiki](https://github.com/ludwigst/paperless-ngx/wiki/Platform%E2%80%90Specific-Troubleshooting).

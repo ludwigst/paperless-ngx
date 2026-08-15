@@ -981,7 +981,7 @@ def run_workflows(
                 # post_save signal. Writing stale in-memory values here would revert
                 # a concurrent update_filename_and_move_files DB write, leaving the
                 # DB pointing at the old path while the file is already at the new
-                # one (see: https://github.com/paperless-ngx/paperless-ngx/issues/12386).
+                # one (see: https://github.com/ludwigst/paperless-ngx/issues/12386).
                 # modified has auto_now=True but is not auto-added when update_fields
                 # is specified, so it must be listed explicitly.
                 document.save(

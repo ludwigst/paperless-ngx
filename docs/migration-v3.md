@@ -47,7 +47,7 @@ Paperless-ngx v3 no longer rejects duplicate documents by default. Instead, it n
 
 ## Encryption Support
 
-Document and thumbnail encryption is no longer supported. This was previously deprecated in [paperless-ng 0.9.3](https://github.com/paperless-ngx/paperless-ngx/blob/dev/docs/changelog.md#paperless-ng-093)
+Document and thumbnail encryption is no longer supported. This was previously deprecated in [paperless-ng 0.9.3](https://github.com/ludwigst/paperless-ngx/blob/dev/docs/changelog.md#paperless-ng-093)
 
 Users must decrypt their document using the `decrypt_documents` command before upgrading.
 

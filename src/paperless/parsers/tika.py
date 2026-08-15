@@ -85,7 +85,7 @@ class TikaDocumentParser:
     name: str = "Paperless-ngx Tika Parser"
     version: str = __full_version_str__
     author: str = "Paperless-ngx Contributors"
-    url: str = "https://github.com/paperless-ngx/paperless-ngx"
+    url: str = "https://github.com/ludwigst/paperless-ngx"
 
     # ------------------------------------------------------------------
     # Class methods

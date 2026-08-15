@@ -1250,7 +1250,7 @@ class TestDocumentApi(DirectoriesMixin, ConsumeTaskMixin, APITestCase):
             - The user filters documents by more than one tag (tags__id__all)
         THEN:
             - The document is returned exactly once, not once per permission path
-            (regression test for https://github.com/paperless-ngx/paperless-ngx/issues/13331)
+            (regression test for https://github.com/ludwigst/paperless-ngx/issues/13331)
         """
         user = User.objects.create_user("user1")
         user.user_permissions.add(*Permission.objects.filter(codename="view_document"))

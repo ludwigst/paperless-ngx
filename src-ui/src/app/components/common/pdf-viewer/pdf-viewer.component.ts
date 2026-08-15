@@ -117,7 +117,7 @@ export class PngxPdfViewerComponent
       changes['zoomScale'] ||
       changes['rotation']
     ) {
-      // Prevent loop with page / scale application see https://github.com/paperless-ngx/paperless-ngx/issues/13404
+      // Prevent loop with page / scale application see https://github.com/ludwigst/paperless-ngx/issues/13404
       this.applyViewerState(
         !!(changes['zoom'] || changes['zoomScale'] || changes['rotation'])
       )

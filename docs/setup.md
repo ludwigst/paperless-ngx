@@ -8,9 +8,9 @@ title: Setup
 
     If you just want Paperless-ngx running quickly, use our installation script:
     ```shell-session
-    bash -c "$(curl --location --silent --show-error https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/main/install-paperless-ngx.sh)"
+    bash -c "$(curl --location --silent --show-error https://raw.githubusercontent.com/ludwigst/paperless-ngx/main/install-paperless-ngx.sh)"
     ```
-    _If piping into a shell directly from the internet makes you nervous, inspect [the script](https://github.com/paperless-ngx/paperless-ngx/blob/main/install-paperless-ngx.sh) first!_
+    _If piping into a shell directly from the internet makes you nervous, inspect [the script](https://github.com/ludwigst/paperless-ngx/blob/main/install-paperless-ngx.sh) first!_
 
 ## Overview
 
@@ -21,7 +21,7 @@ Choose the installation route that best fits your setup:
 | [Installation script](#docker_script)                                                                             | Fastest first-time setup with guided prompts (recommended for most users)           | Low    |
 | [Docker Compose templates](#docker)                                                                               | Manual control over compose files and settings                                      | Medium |
 | [Bare metal](#bare_metal)                                                                                         | Advanced setups, packaging, and development-adjacent workflows                      | High   |
-| [Hosted providers (wiki)](https://github.com/paperless-ngx/paperless-ngx/wiki/Related-Projects#hosting-providers) | Managed hosting options maintained by the community &mdash; check details carefully | Varies |
+| [Hosted providers (wiki)](https://github.com/ludwigst/paperless-ngx/wiki/Related-Projects#hosting-providers) | Managed hosting options maintained by the community &mdash; check details carefully | Varies |
 
 For most users, Docker is the best option. It is faster to set up,
 easier to maintain, and ships with sensible defaults.
@@ -50,7 +50,7 @@ account. In short, it automates the [Docker Compose setup](#docker) described be
 #### Run the installation script
 
 ```shell-session
-bash -c "$(curl --location --silent --show-error https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/main/install-paperless-ngx.sh)"
+bash -c "$(curl --location --silent --show-error https://raw.githubusercontent.com/ludwigst/paperless-ngx/main/install-paperless-ngx.sh)"
 ```
 
 #### After installation
@@ -68,7 +68,7 @@ credentials you provided during the installation script.
 #### Installation
 
 1.  Go to the [/docker/compose directory on the project
-    page](https://github.com/paperless-ngx/paperless-ngx/tree/main/docker/compose){:target="\_blank"}
+    page](https://github.com/ludwigst/paperless-ngx/tree/main/docker/compose){:target="\_blank"}
     and download one `docker-compose.*.yml` file for your preferred
     database backend. Save it in a local directory as `docker-compose.yml`.
     Also download `docker-compose.env` and `.env` into that same directory.
@@ -146,7 +146,7 @@ If you want to run Paperless as a rootless container, set `user:` in `docker-com
 
 ```yaml
 webserver:
-  image: ghcr.io/paperless-ngx/paperless-ngx:latest
+  image: ghcr.io/ludwigst/paperless-ngx:latest
   user: '1000:1000'
 ```
 
@@ -247,10 +247,10 @@ to a positive number to enable polling and disable native filesystem notificatio
     ```
 
 5.  Download a release archive from
-    <https://github.com/paperless-ngx/paperless-ngx/releases>. For example:
+    <https://github.com/ludwigst/paperless-ngx/releases>. For example:
 
     ```shell-session
-    curl -O -L https://github.com/paperless-ngx/paperless-ngx/releases/download/vX.Y.Z/paperless-ngx-vX.Y.Z.tar.xz
+    curl -O -L https://github.com/ludwigst/paperless-ngx/releases/download/vX.Y.Z/paperless-ngx-vX.Y.Z.tar.xz
     ```
 
     Extract the archive with
@@ -406,7 +406,7 @@ to a positive number to enable polling and disable native filesystem notificatio
     !!! note
 
         For instructions on using a reverse proxy,
-        [see the wiki](https://github.com/paperless-ngx/paperless-ngx/wiki/Using-a-Reverse-Proxy-with-Paperless-ngx#).
+        [see the wiki](https://github.com/ludwigst/paperless-ngx/wiki/Using-a-Reverse-Proxy-with-Paperless-ngx#).
 
     !!! warning
 
@@ -480,16 +480,16 @@ image: jonaswinkler/paperless-ng:latest
 to
 
 ```
-image: ghcr.io/paperless-ngx/paperless-ngx:latest
+image: ghcr.io/ludwigst/paperless-ngx:latest
 ```
 
 and then run `docker compose up -d`, which will pull the new image and
 recreate the container. That's it.
 
 Users who installed with the bare-metal route should also update their
-Git clone to point to `https://github.com/paperless-ngx/paperless-ngx`,
+Git clone to point to `https://github.com/ludwigst/paperless-ngx`,
 for example using:
-`git remote set-url origin https://github.com/paperless-ngx/paperless-ngx`
+`git remote set-url origin https://github.com/ludwigst/paperless-ngx`
 and then pull the latest version.
 
 <h3 id="migration_paperless">Migrating from Paperless</h3>
@@ -530,7 +530,7 @@ Migration to Paperless-ngx is then performed in a few simple steps:
 
 3.  Download the latest release of Paperless-ngx. You can either use
     the Docker Compose files from
-    [here](https://github.com/paperless-ngx/paperless-ngx/tree/main/docker/compose)
+    [here](https://github.com/ludwigst/paperless-ngx/tree/main/docker/compose)
     or clone the repository to build the image yourself (see
     [development docs](development.md#docker_build)). You can either replace your current paperless
     folder or put Paperless-ngx in
@@ -603,7 +603,7 @@ commands as well.
 
     1. Otherwise, add a new broker service in `docker-compose.yml`,
        following [the example compose
-       files](https://github.com/paperless-ngx/paperless-ngx/tree/main/docker/compose)
+       files](https://github.com/ludwigst/paperless-ngx/tree/main/docker/compose)
 
     1. Set the environment variable [`PAPERLESS_REDIS`](configuration.md#PAPERLESS_REDIS) so it points to
        the new broker container.
@@ -625,7 +625,7 @@ commands as well.
        value as `TZ`.
 
 8.  Modify `image:` to point to
-    `ghcr.io/paperless-ngx/paperless-ngx:latest` or a specific version
+    `ghcr.io/ludwigst/paperless-ngx:latest` or a specific version
     if preferred.
 9.  Start the containers as before, using `docker compose`.
 
@@ -679,8 +679,8 @@ For details, refer to [configuration](configuration.md).
 
 **Using a reverse proxy with Paperless-ngx**
 
-Please see [the wiki](https://github.com/paperless-ngx/paperless-ngx/wiki/Using-a-Reverse-Proxy-with-Paperless-ngx#nginx) for user-maintained documentation on using nginx with Paperless-ngx.
+Please see [the wiki](https://github.com/ludwigst/paperless-ngx/wiki/Using-a-Reverse-Proxy-with-Paperless-ngx#nginx) for user-maintained documentation on using nginx with Paperless-ngx.
 
 **Enhancing security**
 
-Please see [the wiki](https://github.com/paperless-ngx/paperless-ngx/wiki/Using-Security-Tools-with-Paperless-ngx) for user-maintained documentation on configuring security tools like Fail2ban with Paperless-ngx.
+Please see [the wiki](https://github.com/ludwigst/paperless-ngx/wiki/Using-Security-Tools-with-Paperless-ngx) for user-maintained documentation on configuring security tools like Fail2ban with Paperless-ngx.
