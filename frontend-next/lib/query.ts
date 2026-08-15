@@ -42,4 +42,7 @@ export const queryKeys = {
 	mailAccounts: ['mail-accounts'] as const,
 	mailRules: ['mail-rules'] as const,
 	processedMail: (ruleId: number) => ['processed-mail', ruleId] as const,
+	logs: ['logs'] as const,
+	logFile: (key: string, limit: number) => ['log-file', key, limit] as const,
+	systemStatus: ['system-status'] as const,
 }

@@ -52,5 +52,19 @@ describe('buildPaperlessProxyUrl', () => {
 				'bulk_delete',
 			])?.pathname
 		).toBe('/api/processed_mail/bulk_delete/')
+		expect(
+			buildPaperlessProxyUrl(
+				'http://localhost:8000',
+				['logs', 'paperless'],
+				'?limit=5000'
+			)?.pathname
+		).toBe('/api/logs/paperless/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', ['status'])?.pathname
+		).toBe('/api/status/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', ['tasks', 'run'])
+				?.pathname
+		).toBe('/api/tasks/run/')
 	})
 })

@@ -1,6 +1,7 @@
 'use client'
 
 import {
+	Activity,
 	Archive,
 	Bookmark,
 	FileStack,
@@ -10,6 +11,7 @@ import {
 	ListTodo,
 	Mail,
 	Menu,
+	ScrollText,
 	Search,
 	Settings,
 	Tags,
@@ -34,7 +36,7 @@ import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet'
 import { useUiSettings } from '@/hooks/use-auth'
 import { useHotkeys } from '@/hooks/use-hotkeys'
 import { useSavedViews } from '@/hooks/use-metadata'
-import { can } from '@/lib/auth/permissions'
+import { can, canViewLogs, canViewSystemStatus } from '@/lib/auth/permissions'
 import { cn } from '@/lib/utils'
 import { displayName } from '@/lib/utils/search-params'
 
@@ -90,31 +92,48 @@ const NAV = [
 		icon: ListTodo,
 		type: 'paperlesstask' as const,
 	},
+	{
+		href: '/logs',
+		label: 'Logs',
+		icon: ScrollText,
+		gate: 'logs' as const,
+	},
+	{
+		href: '/status',
+		label: 'Status',
+		icon: Activity,
+		gate: 'status' as const,
+	},
 ]
 
 function NavLinks({
 	pathname,
 	onNavigate,
 	permissions,
-	isSuperuser,
+	user,
 }: {
 	pathname: string
 	onNavigate?: () => void
 	permissions?: string[]
-	isSuperuser?: boolean
+	user?: { id: number; is_superuser?: boolean; is_staff?: boolean }
 }) {
 	return (
 		<nav className="flex flex-col gap-0.5 px-2" aria-label="Primary">
 			{NAV.map((item) => {
-				const action = item.href === '/trash' ? 'delete' : 'view'
 				const allowed =
-					isSuperuser ||
-					can(
-						{ id: 0, is_superuser: isSuperuser },
-						permissions,
-						action,
-						item.type
-					)
+					item.gate === 'logs'
+						? canViewLogs(user)
+						: item.gate === 'status'
+							? canViewSystemStatus(user, permissions)
+							: Boolean(
+									item.type &&
+									can(
+										user,
+										permissions,
+										item.href === '/trash' ? 'delete' : 'view',
+										item.type
+									)
+								)
 				if (!allowed) return null
 				const active =
 					pathname === item.href || pathname.startsWith(`${item.href}/`)
@@ -165,6 +184,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 				'g+i': () => router.push('/inbox'),
 				'g+t': () => router.push('/trash'),
 				'g+m': () => router.push('/mail'),
+				'g+l': () => router.push('/logs'),
+				'g+y': () => router.push('/status'),
 				'g+v': () => router.push('/saved-views'),
 				'g+s': () => router.push('/settings'),
 			}),
@@ -195,7 +216,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 			<NavLinks
 				pathname={pathname}
 				permissions={ui.data?.permissions}
-				isSuperuser={user?.is_superuser}
+				user={user}
 				onNavigate={() => setMobileOpen(false)}
 			/>
 			{views.sidebar.length ? (

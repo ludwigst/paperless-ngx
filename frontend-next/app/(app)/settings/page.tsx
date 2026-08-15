@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { useTheme } from 'next-themes'
 
@@ -10,6 +11,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -38,6 +40,7 @@ export default function SettingsPage() {
 					<TabsTrigger value="account">Account</TabsTrigger>
 					<TabsTrigger value="appearance">Appearance</TabsTrigger>
 					<TabsTrigger value="documents">Documents</TabsTrigger>
+					<TabsTrigger value="system">System</TabsTrigger>
 				</TabsList>
 				<TabsContent value="account">
 					<Card>
@@ -101,6 +104,25 @@ export default function SettingsPage() {
 							Drop files anywhere in the app or use Upload on the documents
 							page. Newly consumed documents appear after the backend finishes
 							OCR.
+						</CardContent>
+					</Card>
+				</TabsContent>
+				<TabsContent value="system">
+					<Card>
+						<CardHeader>
+							<CardTitle>System</CardTitle>
+							<CardDescription>
+								Logs and health checks come from Django. Staff can open them
+								here.
+							</CardDescription>
+						</CardHeader>
+						<CardContent className="flex flex-wrap gap-2">
+							<Button variant="outline" asChild>
+								<Link href="/status">System status</Link>
+							</Button>
+							<Button variant="outline" asChild>
+								<Link href="/logs">Logs</Link>
+							</Button>
 						</CardContent>
 					</Card>
 				</TabsContent>

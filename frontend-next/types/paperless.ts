@@ -302,6 +302,52 @@ export interface Statistics {
 	document_type_count?: number
 }
 
+export type SystemHealth = 'OK' | 'ERROR' | 'WARNING' | 'DISABLED' | string
+
+export interface SystemStatus {
+	pngx_version?: string
+	server_os?: string
+	install_type?: string
+	storage?: { total: number; available: number }
+	database?: {
+		type?: string
+		url?: string
+		status?: SystemHealth
+		error?: string | null
+		migration_status?: {
+			latest_migration?: string
+			unapplied_migrations?: string[]
+		}
+	}
+	tasks?: {
+		redis_url?: string
+		redis_status?: SystemHealth
+		redis_error?: string | null
+		celery_status?: SystemHealth
+		celery_url?: string | null
+		celery_error?: string | null
+		index_status?: SystemHealth
+		index_last_modified?: string | null
+		index_error?: string | null
+		classifier_status?: SystemHealth
+		classifier_last_trained?: string | null
+		classifier_error?: string | null
+		sanity_check_status?: SystemHealth
+		sanity_check_last_run?: string | null
+		sanity_check_error?: string | null
+		llmindex_status?: SystemHealth
+		llmindex_last_modified?: string | null
+		llmindex_error?: string | null
+		summary?: {
+			days?: number
+			total_count?: number
+			pending_count?: number
+			success_count?: number
+			failure_count?: number
+		}
+	}
+}
+
 export type BulkEditMethod =
 	| 'set_correspondent'
 	| 'set_document_type'
