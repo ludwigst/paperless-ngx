@@ -51,6 +51,7 @@ import { createSavedView, updateSavedView } from '@/lib/api/metadata'
 import { saveUiSettings } from '@/lib/api/system'
 import { queryKeys } from '@/lib/query'
 import { cn } from '@/lib/utils'
+import { wantsBulkConfirmation } from '@/lib/utils/bulk-edit'
 import {
 	filterRulesFromQuery,
 	queryParamsFromFilterRules,
@@ -61,7 +62,6 @@ import {
 	toggleId,
 } from '@/lib/utils/saved-views'
 import { searchParamsToQuery } from '@/lib/utils/search-params'
-import { wantsBulkConfirmation } from '@/lib/utils/bulk-edit'
 import type { BulkEditMethod } from '@/types/paperless'
 
 export function DocumentExplorer({
@@ -511,10 +511,7 @@ export function DocumentExplorer({
 						<Button variant="outline" onClick={() => setSaveOpen(false)}>
 							Cancel
 						</Button>
-						<Button
-							onClick={() => saveAs.mutate()}
-							disabled={saveAs.isPending}
-						>
+						<Button onClick={() => saveAs.mutate()} disabled={saveAs.isPending}>
 							Save
 						</Button>
 					</DialogFooter>

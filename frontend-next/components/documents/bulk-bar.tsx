@@ -38,10 +38,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import {
-	bulkAssignMessage,
-	bulkTagsMessage,
-} from '@/lib/utils/bulk-edit'
+import { bulkAssignMessage, bulkTagsMessage } from '@/lib/utils/bulk-edit'
 import type {
 	BulkEditMethod,
 	Correspondent,
@@ -386,8 +383,8 @@ function AssignDialog({
 				<DialogHeader>
 					<DialogTitle>{kind ? `Set ${kind}` : 'Assign'}</DialogTitle>
 					<DialogDescription>
-						Applies to {count} selected document{count === 1 ? '' : 's'}.
-						Choose None to clear the field.
+						Applies to {count} selected document{count === 1 ? '' : 's'}. Choose
+						None to clear the field.
 					</DialogDescription>
 				</DialogHeader>
 				<Select value={value} onValueChange={setValue}>

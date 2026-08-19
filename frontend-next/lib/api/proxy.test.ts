@@ -34,10 +34,8 @@ describe('buildPaperlessProxyUrl', () => {
 
 	it('allows mail account test and process paths', () => {
 		expect(
-			buildPaperlessProxyUrl('http://localhost:8000', [
-				'mail_accounts',
-				'test',
-			])?.pathname
+			buildPaperlessProxyUrl('http://localhost:8000', ['mail_accounts', 'test'])
+				?.pathname
 		).toBe('/api/mail_accounts/test/')
 		expect(
 			buildPaperlessProxyUrl('http://localhost:8000', [
@@ -66,6 +64,10 @@ describe('buildPaperlessProxyUrl', () => {
 			buildPaperlessProxyUrl('http://localhost:8000', ['tasks', 'run'])
 				?.pathname
 		).toBe('/api/tasks/run/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', ['documents', 'edit_pdf'])
+				?.pathname
+		).toBe('/api/documents/edit_pdf/')
 		expect(
 			buildPaperlessProxyUrl('http://localhost:8000', [
 				'documents',

@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Download, Link2, Save, Trash2 } from 'lucide-react'
+import { ArrowLeft, Download, Link2, Pencil, Save, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { CustomFieldEditor } from '@/components/documents/custom-field-editor'
 import { DocumentHistory } from '@/components/documents/document-history'
 import { DocumentNotes } from '@/components/documents/document-notes'
+import { PdfEditorDialog } from '@/components/documents/pdf-editor-dialog'
 import { ShareLinksDialog } from '@/components/documents/share-links-dialog'
 import { TagPicker } from '@/components/documents/tag-picker'
 import {
@@ -36,7 +37,7 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
-import { usePermission } from '@/hooks/use-auth'
+import { usePermission, useUiSettings } from '@/hooks/use-auth'
 import {
 	useCorrespondents,
 	useCustomFields,
@@ -51,14 +52,22 @@ import {
 	getDocument,
 	patchDocument,
 } from '@/lib/api/documents'
+import { ownsObject } from '@/lib/auth/permissions'
 import { queryKeys } from '@/lib/query'
+import {
+	defaultPdfEditMode,
+	isPdfMime,
+	pdfSourceDocumentId,
+} from '@/lib/utils/pdf-editor'
 import type { CustomFieldInstance } from '@/types/paperless'
 
 export function DocumentDetail({ id }: { id: number }) {
 	const router = useRouter()
 	const queryClient = useQueryClient()
+	const ui = useUiSettings()
 	const canShare = usePermission('add', 'sharelink')
 	const canChange = usePermission('change', 'document')
+	const canAdd = usePermission('add', 'document')
 	const canDelete = usePermission('delete', 'document')
 	const documentQuery = useQuery({
 		queryKey: queryKeys.document(id),
@@ -77,9 +86,15 @@ export function DocumentDetail({ id }: { id: number }) {
 	const [customFields, setCustomFields] = useState<CustomFieldInstance[]>()
 	const [asn, setAsn] = useState<string>()
 	const [shareOpen, setShareOpen] = useState(false)
+	const [pdfEditorOpen, setPdfEditorOpen] = useState(false)
 	const [confirmDelete, setConfirmDelete] = useState(false)
 
 	const doc = documentQuery.data
+	const canEditPdf =
+		Boolean(doc) &&
+		canChange &&
+		ownsObject(ui.data?.user, doc?.owner) &&
+		isPdfMime(doc?.mime_type)
 	const draft = {
 		title: title ?? doc?.title ?? '',
 		correspondent:
@@ -158,6 +173,15 @@ export function DocumentDetail({ id }: { id: number }) {
 					</Link>
 				</Button>
 				<div className="ml-auto flex flex-wrap gap-2">
+					{canEditPdf ? (
+						<Button
+							variant="outline"
+							onClick={() => setPdfEditorOpen(true)}
+						>
+							<Pencil className="size-4" />
+							PDF editor
+						</Button>
+					) : null}
 					{canShare ? (
 						<Button variant="outline" onClick={() => setShareOpen(true)}>
 							<Link2 className="size-4" />
@@ -331,6 +355,21 @@ export function DocumentDetail({ id }: { id: number }) {
 				open={shareOpen}
 				onOpenChange={setShareOpen}
 				hasArchive={Boolean(doc.archived_file_name)}
+			/>
+
+			<PdfEditorDialog
+				open={pdfEditorOpen}
+				onOpenChange={setPdfEditorOpen}
+				documentId={doc.id}
+				versionId={pdfSourceDocumentId(doc)}
+				pageCount={doc.page_count ?? 0}
+				documentTitle={doc.title}
+				defaultEditMode={defaultPdfEditMode(ui.data?.settings)}
+				canAdd={canAdd}
+				canDelete={canDelete}
+				onQueued={({ deleteOriginal }) => {
+					if (deleteOriginal) router.push('/documents')
+				}}
 			/>
 
 			<AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>
