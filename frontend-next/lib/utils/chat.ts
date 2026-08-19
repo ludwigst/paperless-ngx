@@ -44,8 +44,6 @@ export function hasInboxTag(
 	tags: Array<{ id: number; is_inbox_tag?: boolean }>
 ) {
 	return Boolean(
-		tagIds?.some(
-			(id) => tags.find((tag) => tag.id === id)?.is_inbox_tag
-		)
+		tagIds?.some((id) => tags.find((tag) => tag.id === id)?.is_inbox_tag)
 	)
 }

@@ -44,10 +44,13 @@ describe('chat helpers', () => {
 
 	it('detects inbox tags on a document', () => {
 		expect(
-			hasInboxTag([1, 2], [
-				{ id: 1, is_inbox_tag: false },
-				{ id: 2, is_inbox_tag: true },
-			])
+			hasInboxTag(
+				[1, 2],
+				[
+					{ id: 1, is_inbox_tag: false },
+					{ id: 2, is_inbox_tag: true },
+				]
+			)
 		).toBe(true)
 		expect(hasInboxTag([1], [{ id: 1, is_inbox_tag: false }])).toBe(false)
 	})

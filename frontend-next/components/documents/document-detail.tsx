@@ -1,7 +1,15 @@
 'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Download, Link2, Save, Sparkles, Trash2 } from 'lucide-react'
+import {
+	ArrowLeft,
+	Download,
+	Link2,
+	Pencil,
+	Save,
+	Sparkles,
+	Trash2,
+} from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -10,6 +18,7 @@ import { toast } from 'sonner'
 import { CustomFieldEditor } from '@/components/documents/custom-field-editor'
 import { DocumentHistory } from '@/components/documents/document-history'
 import { DocumentNotes } from '@/components/documents/document-notes'
+import { PdfEditorDialog } from '@/components/documents/pdf-editor-dialog'
 import { ShareLinksDialog } from '@/components/documents/share-links-dialog'
 import { SuggestionChips } from '@/components/documents/suggestion-chips'
 import { TagPicker } from '@/components/documents/tag-picker'
@@ -54,8 +63,14 @@ import {
 	patchDocument,
 } from '@/lib/api/documents'
 import { createNamed } from '@/lib/api/metadata'
+import { ownsObject } from '@/lib/auth/permissions'
 import { queryKeys } from '@/lib/query'
 import { hasInboxTag, isAiEnabled } from '@/lib/utils/chat'
+import {
+	defaultPdfEditMode,
+	isPdfMime,
+	pdfSourceDocumentId,
+} from '@/lib/utils/pdf-editor'
 import type { CustomFieldInstance } from '@/types/paperless'
 
 export function DocumentDetail({ id }: { id: number }) {
@@ -64,6 +79,7 @@ export function DocumentDetail({ id }: { id: number }) {
 	const ui = useUiSettings()
 	const canShare = usePermission('add', 'sharelink')
 	const canChange = usePermission('change', 'document')
+	const canAdd = usePermission('add', 'document')
 	const canDelete = usePermission('delete', 'document')
 	const canAddTag = usePermission('add', 'tag')
 	const canAddCorrespondent = usePermission('add', 'correspondent')
@@ -86,6 +102,7 @@ export function DocumentDetail({ id }: { id: number }) {
 	const [customFields, setCustomFields] = useState<CustomFieldInstance[]>()
 	const [asn, setAsn] = useState<string>()
 	const [shareOpen, setShareOpen] = useState(false)
+	const [pdfEditorOpen, setPdfEditorOpen] = useState(false)
 	const [confirmDelete, setConfirmDelete] = useState(false)
 	const [askSuggestions, setAskSuggestions] = useState(false)
 
@@ -101,6 +118,11 @@ export function DocumentDetail({ id }: { id: number }) {
 		queryFn: () => getDocumentSuggestions(id, aiEnabled),
 		enabled: canChange && Boolean(doc) && (inboxTagged || askSuggestions),
 	})
+	const canEditPdf =
+		Boolean(doc) &&
+		canChange &&
+		ownsObject(ui.data?.user, doc?.owner) &&
+		isPdfMime(doc?.mime_type)
 	const draft = {
 		title: title ?? doc?.title ?? '',
 		correspondent:
@@ -198,6 +220,12 @@ export function DocumentDetail({ id }: { id: number }) {
 					</Link>
 				</Button>
 				<div className="ml-auto flex flex-wrap gap-2">
+					{canEditPdf ? (
+						<Button variant="outline" onClick={() => setPdfEditorOpen(true)}>
+							<Pencil className="size-4" />
+							PDF editor
+						</Button>
+					) : null}
 					{canChange ? (
 						<Button
 							variant="outline"
@@ -258,8 +286,8 @@ export function DocumentDetail({ id }: { id: number }) {
 						/>
 					) : (
 						<div className="grid h-[75vh] place-items-center p-8 text-center text-muted-foreground">
-							Preview is not available for this file type. Download the
-							original instead.
+							Preview is not available for this file type. Download the original
+							instead.
 						</div>
 					)}
 				</div>
@@ -367,7 +395,9 @@ export function DocumentDetail({ id }: { id: number }) {
 									draft.storage_path
 								).concat(
 									canAddPath
-										? novelSuggestions(suggestions.data?.suggested_storage_paths)
+										? novelSuggestions(
+												suggestions.data?.suggested_storage_paths
+											)
 										: []
 								)}
 								onPick={(key) => {
@@ -428,8 +458,7 @@ export function DocumentDetail({ id }: { id: number }) {
 												'tags',
 												queryKeys.tags,
 												key.slice(7),
-												(createdId) =>
-													setTagIds([...draft.tags, createdId])
+												(createdId) => setTagIds([...draft.tags, createdId])
 											)
 											return
 										}
@@ -501,6 +530,21 @@ export function DocumentDetail({ id }: { id: number }) {
 				hasArchive={Boolean(doc.archived_file_name)}
 			/>
 
+			<PdfEditorDialog
+				open={pdfEditorOpen}
+				onOpenChange={setPdfEditorOpen}
+				documentId={doc.id}
+				versionId={pdfSourceDocumentId(doc)}
+				pageCount={doc.page_count ?? 0}
+				documentTitle={doc.title}
+				defaultEditMode={defaultPdfEditMode(ui.data?.settings)}
+				canAdd={canAdd}
+				canDelete={canDelete}
+				onQueued={({ deleteOriginal }) => {
+					if (deleteOriginal) router.push('/documents')
+				}}
+			/>
+
 			<AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
@@ -530,9 +574,7 @@ function namedSuggestions(
 		.filter((id) => id !== current)
 		.map((id) => {
 			const option = options.find((item) => item.id === id)
-			return option
-				? { key: String(option.id), label: option.name }
-				: null
+			return option ? { key: String(option.id), label: option.name } : null
 		})
 		.filter(Boolean) as Array<{ key: string; label: string }>
 }

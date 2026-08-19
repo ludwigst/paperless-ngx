@@ -17,7 +17,7 @@ Do not remove `src-ui/` until critical rows are complete and tested.
 | Document types CRUD                      |       ✓ |       ✓ |        |        ✓ |
 | Storage paths CRUD                       |       ✓ |       ✓ |        |        ✓ |
 | Custom fields                            |       ✓ |       ✓ |      ✓ |        ✓ |
-| Bulk operations                          |       ✓ |       ✓ |        |  partial |
+| Bulk operations                          |       ✓ |       ✓ |      ✓ |        ✓ |
 | Tasks                                    |       ✓ |       ✓ |        |  partial |
 | Workflows                                |       ✓ |       ✓ |        |  partial |
 | Users / groups                           |       ✓ |       ✓ |        |  partial |
@@ -28,7 +28,7 @@ Do not remove `src-ui/` until critical rows are complete and tested.
 | Mail                                     |       ✓ |       ✓ |      ✓ |        ✓ |
 | Trash                                    |       ✓ |       ✓ |      ✓ |        ✓ |
 | Share links                              |       ✓ |       ✓ |      ✓ |        ✓ |
-| PDF editor                               |       ✓ |         |        |          |
+| PDF editor                               |       ✓ |       ✓ |      ✓ |        ✓ |
 | Chat / AI                                |       ✓ |       ✓ |      ✓ |        ✓ |
 | Logs / system status                     |       ✓ |       ✓ |      ✓ |        ✓ |
 | Docker production UI swap                |       ✓ |         |        |          |

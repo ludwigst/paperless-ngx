@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
 	orderViews,
@@ -56,9 +56,9 @@ describe('withVisibility', () => {
 
 describe('orderViews', () => {
 	it('honors sort order then appends leftovers', () => {
-		expect(
-			orderViews(views, [1, 2, 3], [3, 1]).map((view) => view.id)
-		).toEqual([3, 1, 2])
+		expect(orderViews(views, [1, 2, 3], [3, 1]).map((view) => view.id)).toEqual(
+			[3, 1, 2]
+		)
 	})
 })
 
@@ -88,10 +88,14 @@ describe('toggleId', () => {
 })
 
 describe('trashDaysRemaining', () => {
+	afterEach(() => {
+		vi.restoreAllMocks()
+	})
+
 	it('subtracts elapsed days from the server delay', () => {
-		const deletedAt = new Date(
-			Date.now() - 5 * 24 * 60 * 60 * 1000
-		).toISOString()
+		const now = Date.UTC(2026, 7, 19, 12, 0, 0)
+		vi.spyOn(Date, 'now').mockReturnValue(now)
+		const deletedAt = new Date(now - 5 * 24 * 60 * 60 * 1000).toISOString()
 		expect(trashDaysRemaining(deletedAt, 30)).toBe(25)
 		expect(trashDaysRemaining(null, 30)).toBeNull()
 	})

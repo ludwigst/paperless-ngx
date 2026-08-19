@@ -6,6 +6,7 @@ import type {
 	DocumentNote,
 	DocumentSuggestions,
 	Paginated,
+	SelectionData,
 } from '@/types/paperless'
 
 export interface DocumentListParams {
@@ -49,6 +50,13 @@ export function patchDocument(
 export function deleteDocument(id: number) {
 	return apiFetch<void>(`/api/paperless/documents/${id}/`, {
 		method: 'DELETE',
+	})
+}
+
+export function getSelectionData(documents: number[]) {
+	return apiFetch<SelectionData>('/api/paperless/documents/selection_data/', {
+		method: 'POST',
+		body: JSON.stringify({ documents }),
 	})
 }
 
@@ -103,8 +111,17 @@ export function uploadDocument(
 	)
 }
 
-export function documentPreviewUrl(id: number, original = false) {
-	return `/api/paperless/documents/${id}/preview/${original ? '?original=true' : ''}`
+export function documentPreviewUrl(
+	id: number,
+	options: { original?: boolean; version?: number } | boolean = false
+) {
+	const original =
+		typeof options === 'boolean' ? options : Boolean(options.original)
+	const version = typeof options === 'boolean' ? undefined : options.version
+	return `/api/paperless/documents/${id}/preview/${toQuery({
+		original: original ? true : undefined,
+		version,
+	})}`
 }
 
 export function documentThumbUrl(id: number) {
@@ -113,6 +130,30 @@ export function documentThumbUrl(id: number) {
 
 export function documentDownloadUrl(id: number, original = false) {
 	return `/api/paperless/documents/${id}/download/${original ? '?original=true' : ''}`
+}
+
+export function editPdfDocuments(input: {
+	documents: number[]
+	operations: Array<{ page: number; rotate?: number; doc?: number }>
+	delete_original?: boolean
+	update_document?: boolean
+	include_metadata?: boolean
+	source_mode?: 'explicit_selection' | 'latest_version'
+}) {
+	return apiFetch<{ result?: string; task_id?: string }>(
+		'/api/paperless/documents/edit_pdf/',
+		{
+			method: 'POST',
+			body: JSON.stringify({
+				documents: input.documents,
+				operations: input.operations,
+				delete_original: input.delete_original ?? false,
+				update_document: input.update_document ?? false,
+				include_metadata: input.include_metadata ?? true,
+				source_mode: input.source_mode ?? 'explicit_selection',
+			}),
+		}
+	)
 }
 
 export function addDocumentNote(documentId: number, note: string) {

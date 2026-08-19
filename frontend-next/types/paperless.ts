@@ -361,6 +361,19 @@ export interface SystemStatus {
 	}
 }
 
+export interface SelectionDataItem {
+	id: number
+	document_count: number
+}
+
+export interface SelectionData {
+	selected_storage_paths?: SelectionDataItem[]
+	selected_correspondents?: SelectionDataItem[]
+	selected_tags?: SelectionDataItem[]
+	selected_document_types?: SelectionDataItem[]
+	selected_custom_fields?: SelectionDataItem[]
+}
+
 export type BulkEditMethod =
 	| 'set_correspondent'
 	| 'set_document_type'

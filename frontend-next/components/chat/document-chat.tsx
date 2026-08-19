@@ -19,10 +19,7 @@ import {
 } from '@/components/ui/popover'
 import { streamChat } from '@/lib/api/chat'
 import { cn } from '@/lib/utils'
-import {
-	documentIdFromPath,
-	type ChatReference,
-} from '@/lib/utils/chat'
+import { documentIdFromPath, type ChatReference } from '@/lib/utils/chat'
 
 interface ChatMessage {
 	role: 'user' | 'assistant'
@@ -118,9 +115,7 @@ export function DocumentChat() {
 					variant="ghost"
 					size="icon"
 					aria-label={
-						documentId
-							? 'Ask about this document'
-							: 'Ask about your documents'
+						documentId ? 'Ask about this document' : 'Ask about your documents'
 					}
 				>
 					<MessageSquare className="size-4" />
@@ -150,9 +145,7 @@ export function DocumentChat() {
 							key={`${message.role}-${index}`}
 							className={cn(
 								'max-w-[95%] rounded-lg px-2.5 py-2 whitespace-pre-wrap',
-								message.role === 'user'
-									? 'ml-auto bg-secondary'
-									: 'bg-muted/60'
+								message.role === 'user' ? 'ml-auto bg-secondary' : 'bg-muted/60'
 							)}
 						>
 							{message.content}
