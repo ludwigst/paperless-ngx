@@ -80,5 +80,23 @@ describe('buildPaperlessProxyUrl', () => {
 				'bulk_edit',
 			])?.pathname
 		).toBe('/api/documents/bulk_edit/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', ['documents', 'chat'])
+				?.pathname
+		).toBe('/api/documents/chat/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', [
+				'documents',
+				'12',
+				'suggestions',
+			])?.pathname
+		).toBe('/api/documents/12/suggestions/')
+		expect(
+			buildPaperlessProxyUrl('http://localhost:8000', [
+				'documents',
+				'12',
+				'ai_suggestions',
+			])?.pathname
+		).toBe('/api/documents/12/ai_suggestions/')
 	})
 })

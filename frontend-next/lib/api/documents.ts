@@ -4,6 +4,7 @@ import type {
 	BulkEditMethod,
 	Document,
 	DocumentNote,
+	DocumentSuggestions,
 	Paginated,
 	SelectionData,
 } from '@/types/paperless'
@@ -177,5 +178,12 @@ export function deleteDocumentNote(documentId: number, noteId: number) {
 export function getDocumentHistory(documentId: number) {
 	return apiFetch<AuditLogEntry[]>(
 		`/api/paperless/documents/${documentId}/history/`
+	)
+}
+
+export function getDocumentSuggestions(id: number, aiEnabled = false) {
+	const action = aiEnabled ? 'ai_suggestions' : 'suggestions'
+	return apiFetch<DocumentSuggestions>(
+		`/api/paperless/documents/${id}/${action}/`
 	)
 }
